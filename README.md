@@ -15,7 +15,7 @@ This application uses the Apache 2.0 license. A few integrations were already co
 Contributing
 ------------
 
-Feel free to fork the project, and send a pull request. All contributions are welcome, no matter the size.
+Feel free to fork the project, and send a pull request. All contributions are welcome, no matter the size. Please follow the project's coding standards, which are included.
 
 To-Do's
 ------------
