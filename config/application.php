@@ -6,6 +6,7 @@
  */
 
 namespace payments;
+use Symfony\Component\ClassLoader as cl;
 
 /**
  * This class is a sample configuration used to connecting to the database.
@@ -16,25 +17,54 @@ class Application
 {
 	/**
 	 * Database host.
-	 * @var static string $_dbHost
+	 * @var static string
 	 */
 	protected static $_dbHost = 'localhost';
 	
 	/**
 	 * Database Username.
-	 * @var static string $_dbUsername
+	 * @var static string 
 	 */
-	protected static $_dbUsername = '';
+	protected static $_dbUsername = 'root';
 	
 	/**
 	 * Database Password.
-	 * @var static string $_dbPassword
+	 * @var static string
 	 */
 	protected static $_dbPassword = '';
 	
 	/**
 	 * Database Name (with prefix).
-	 * @var static string $_dbName
+	 * @var static string 
 	 */
-	protected static $_dbName = '';
+	protected static $_dbName = 'payments';
+	
+	/**
+	 * Sample Encryption Key.
+	 * @var static string
+	 */
+	protected static $_encryptionKey = 'sample';
+	
+	/**
+	 * When the class is instantiated, handle autoloading through Symfony. 
+	 */
+	public function __construct()
+	{
+		$this->_autoload();
+		
+	}
+	
+	protected function _autoload()
+	{
+		require_once '/../library/Symfony/ClassLoader/UniversalClassLoader.php';
+
+		$loader = new cl\UniversalClassLoader();
+		
+		$loader->registerNamespaces(array(
+		    'payments' => __DIR__.'/../library',
+		));
+
+		$loader->register();
+	}
+	
 }

@@ -12,12 +12,33 @@
  * http://www.authorize.net/support/merchant/Transaction_Response/Transaction_Response.htm
  */
 
-namespace tcole\payments;
+namespace payments\modules;
+
+/**
+ * This module requires the following parameters set through payments\Modules.
+ * $referenceArray optional, pass whatever you need, such as an invoiceId, userId etc.
+ * Below is the required $billingDetails with sample values.
+ * $billingDetails = array(
+			'firstName'		=> 'John',
+			'lastName'		=> 'Doe',
+			'address'		=> '121 Main St',
+			'city'			=> 'New York',
+			'state'			=> 'New York',
+			'zip'			=> '12345',
+			'country'		=> 'US',
+			'email'			=> 'fake@fake.com',
+			'phone'			=> '5555555555',
+			'creditCardNumber'		=> '4007000000027',
+			'x_amount'		=> '1.99',
+			'description'	=> 'Sample',
+			'creditCardExpDate'	=> '12/2012',
+			'creditCardCode'	=> '214',
+ */
 
 /**
  * @package Authorize.net
  */
-class AuthorizeNet implements \tcole\payments\interfaces\Modules
+class AuthorizeNet implements \payments\interfaces\Modules
 {
 
 	/**
@@ -139,8 +160,8 @@ class AuthorizeNet implements \tcole\payments\interfaces\Modules
 	public function  __construct($amount, $referenceArray, $billingDetails, $settings){
 
 		$defaults = array(
-			'x_login'			=> \tcole\General::decrypt($settings['x_login']),
-			'x_tran_key'		=> \tcole\General::decrypt($settings['x_tran_key']),
+			'x_login'			=> \payments\General::decrypt($settings['x_login']),
+			'x_tran_key'		=> \payments\General::decrypt($settings['x_tran_key']),
 			'x_first_name'		=> $billingDetails['firstName'],
 			'x_last_name'		=> $billingDetails['lastName'],
 			'x_address'			=> $billingDetails['address'],
@@ -247,11 +268,9 @@ class AuthorizeNet implements \tcole\payments\interfaces\Modules
 	 * @access public
 	 */
 	public function process(){
-
 		$this->forceParameters();
-
+	
 		if(!$this->mock){
-
 			// execute API calls
 			$ch = curl_init( (!$this->debug ? self::URL_LIVE : self::URL_TEST ) );
 			curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -271,9 +290,7 @@ class AuthorizeNet implements \tcole\payments\interfaces\Modules
 
 		} else {
 			$this->response = $this->mock_reponse;
-		}
-
-		return true;
+		}		return true;
 
 	}
 

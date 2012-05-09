@@ -4,7 +4,7 @@ Payment Methods - An All-in-one Wrapper
 Goals
 --------
 
-The purpose of this project was to support multiple payment gateways, but one entry to record a payment. It supports PayPal, PayPal Pro, Google CheckOut, Authorize.net, Authorize.net Automated Recurring Billing (ARB), and 2CheckOut.
+The purpose of this project was to support multiple payment gateways, but through one entry to record a payment. It supports PayPal, PayPal Pro, Google CheckOut, Authorize.net, Authorize.net Automated Recurring Billing (ARB), and 2CheckOut. Some classes were already created by 3rd parties, and adapted to use a single entry-point for all gateways.
 
 
 Licensing

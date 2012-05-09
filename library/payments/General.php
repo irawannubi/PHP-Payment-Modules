@@ -10,17 +10,12 @@ namespace payments;
 /**
  * @description This class is merely for reference materials only. Please use your actual app's code.
  */
-class General
-{
-	/**
-	 * Sample Encryption Key.
-	 * @var string $_encryptionKey
-	 */
-	private $_encryptionKey = 'sample';
-	
+class General extends Application
+{	
 	/**
 	 * @description Returns Class name with full namespaced.
 	 * @param string $classWithNamespace
+	 * @return string Class without namespace attached.
 	 */
 	static public function getRealClassFromNamespace($classWithNamespace) {
 		//@todo: clean this up.
@@ -36,7 +31,7 @@ class General
 	 * @return string Encrypted string.
 	 */
 	static public function encrypt($string) {
-		return trim(base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $this->_encryptionKey, $string, MCRYPT_MODE_ECB,
+		return trim(base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, parent::$_encryptionKey, $string, MCRYPT_MODE_ECB,
 				mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB),
 						MCRYPT_RAND))));
 	}
@@ -47,7 +42,7 @@ class General
 	 * @return string Decrypted string.
 	 */
 	static public function decrypt($string) {
-		return trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $this->_encryptionKey, base64_decode($string), MCRYPT_MODE_ECB,
+		return trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, parent::$_encryptionKey, base64_decode($string), MCRYPT_MODE_ECB,
 				mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND)));
 	}
 
