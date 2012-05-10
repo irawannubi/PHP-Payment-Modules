@@ -13,18 +13,47 @@
  * http://developer.authorize.net/tools/arberrorcodes/
  */
 
-namespace tcole\payments;
+namespace payments\modules;
+
+/**
+ * This module requires the following parameters set through payments\Modules.
+ * $referenceArray is required, but you can also pass whatever you need, such as an invoiceId, userId etc.
+ * $referenceArray = array(
+   'x_subsc_name'	=> 'Test Sub',
+   'x_length'		=> '12',
+   'x_unit'			=> 'months',
+   'x_start_date'	=> mktime(0, 0, 0, 05, 09, 2012),
+   'x_total_occurrences' => 5);
+ * 
+ * Below is the required $billingDetails with sample values.
+ * $billingDetails = array(
+ 'firstName'	=> 'John',
+ 'lastName'		=> 'Doe',
+ 'address'		=> '121 Main St',
+ 'city'			=> 'New York',
+ 'state'		=> 'New York',
+ 'zip'			=> '12345',
+ 'country'		=> 'US',
+ 'email'			=> 'fake@fake.com',
+ 'phone'			=> '5555555555',
+ 'creditCardNumber'		=> '4007000000027',
+ 'x_amount'		=> '1.99',
+ 'description'	=> 'Sample',
+ 'creditCardExpDate'	=> '12/2012',
+ 'creditCardCode'	=> '214',
+ 'referenceId'		=> '123'
+  */
 
 /**
  * @package Authorize.net
  */
-class AuthNetARB extends AuthorizeNet implements \tcole\payments\interfaces\Modules {
+class AuthNetARB extends AuthorizeNet implements \payments\interfaces\Modules {
     
         /**
 	 * @var boolean Toggles test urls, etc
 	 * @access public
 	 */
-	public $debug = false;
+	public $debug = true;
 
 	/**
 	 * @var string Which mode are using (create, update, cancel)
@@ -54,8 +83,8 @@ class AuthNetARB extends AuthorizeNet implements \tcole\payments\interfaces\Modu
 	public function  __construct($amount, $referenceArray, $billingDetails, $settings){
 		$defaults = array(
 			// These all must be provided by user
-			'x_login'			=> \tcole\General::decrypt($settings['x_login']),
-			'x_tran_key'		=> \tcole\General::decrypt($settings['x_tran_key']),
+			'x_login'			=> \payments\General::decrypt($settings['x_login']),
+			'x_tran_key'		=> \payments\General::decrypt($settings['x_tran_key']),
 			'x_ref_id'				=> $billingDetails['referenceId'],
 			'x_subsc_id'			=> false,
 			'x_subsc_name'			=> $referenceArray['x_subsc_name'],
@@ -194,7 +223,7 @@ class AuthNetARB extends AuthorizeNet implements \tcole\payments\interfaces\Modu
 		}
 
 		// Build the final XML
-		$xml = new tools\Xml('1.0', 'utf-8');
+		$xml = new \payments\tools\Xml('1.0', 'utf-8');
 		$post_xml = $xml->arrayToXml($base_arr, $root_elmnt);
 		$post_xml = str_replace('<'.$root_elmnt, '<'.$root_elmnt.' xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"', $post_xml);
 		return $post_xml;

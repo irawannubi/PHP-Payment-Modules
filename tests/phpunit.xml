@@ -5,7 +5,7 @@
 
     <filter>
         <whitelist>
-            <directory suffix=".php">../library/paymenys</directory>
+            <directory suffix=".php">../library/payments</directory>
         </whitelist>
     </filter>
 

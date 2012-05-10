@@ -1,5 +1,6 @@
 Payment Methods - An All-in-one Wrapper
 ==============================================
+[![Build Status](https://secure.travis-ci.org/tylercole/PHP-Payment-Modules.png)](http://travis-ci.org/tylercole/PHP-Payment-Modules)
 
 Goals
 --------
