@@ -22,6 +22,6 @@ set_include_path('.' . PATH_SEPARATOR . BASE_PATH . '/library'
 // Set the default timezone
 date_default_timezone_set('America/New_York');
 
-require_once('../config/Application.php');
+require_once BASE_PATH . '/config/Application.php';
 // Create application,
 $application = new \payments\Application();
