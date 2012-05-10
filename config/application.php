@@ -56,7 +56,7 @@ class Application
 	
 	protected function _autoload()
 	{
-		require_once '/../library/Symfony/ClassLoader/UniversalClassLoader.php';
+		require_once __DIR__.'/../library/Symfony/ClassLoader/UniversalClassLoader.php';
 
 		$loader = new cl\UniversalClassLoader();
 		

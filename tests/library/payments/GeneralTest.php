@@ -4,13 +4,25 @@ class GeneralTest extends \PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
+		// string to test encryption with.
+		$this->toEncrypt = 'abcd1234';
 	}
 	
-	public function does1Plus1Equal2Test()
+	public function testNamespaceRemovalFromClass()
 	{
-		$var = 1 + 1;
+		$class = 'payments\\module\\Test';
+		$classResult = payments\General::getRealClassFromNamespace($class);
+		$expectedResult = 'Test';
 		
-		$this->assertNotEmpty($var);
+		$this->assertEquals($expectedResult, $classResult);
 	}
+	
+	/*public function testEncryptionDecryption()
+	{
+		$encrypt = payments\General::encrypt($this->toEncrypt);
+		$decrypt = payments\General::decrypt($encrypt);
+		
+		$this->assertEquals($decrypt, $this->toEncrypt);
+	}*/
 
 }

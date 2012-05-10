@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 use payments\Application;
 
 /** Application */
@@ -34,11 +36,10 @@ $billingDetails = array(
 );
 $response = $module->processPayment('1.99', array('invoiceId' => 1, 'description' => 'Sample'), $billingDetails);
 
-if($response) {
-	echo 'It worked!';
+if(!$response) {
+	echo 'Denied: ';
+    echo $module->getResponse();
 } else {
-	echo 'Not so lucky.';
+    echo 'Approved: ';
+    echo $module->getResponse();
 }
-
-// Raw response.
-var_dump($module->getResponse());

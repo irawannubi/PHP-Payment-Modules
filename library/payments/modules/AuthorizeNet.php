@@ -45,7 +45,7 @@ class AuthorizeNet implements \payments\interfaces\Modules
 	 * @var boolean Toggles test urls, etc
 	 * @access public
 	 */
-	public $debug = false;
+	public $debug = true;
 
 	/**
 	 * @var boolean Toggles mock mode - fake approved request, and never contact auth.net
@@ -150,7 +150,6 @@ class AuthorizeNet implements \payments\interfaces\Modules
 	 */
 	const URL_TEST = 'https://test.authorize.net/gateway/transact.dll';
 
-
 	/**
 	 * Initializes the class, merges the transaction array with the defaults
 	 *
@@ -190,7 +189,6 @@ class AuthorizeNet implements \payments\interfaces\Modules
 		);
 
 		$this->fields = $defaults;
-
 	}
 
 
@@ -269,24 +267,15 @@ class AuthorizeNet implements \payments\interfaces\Modules
 	 */
 	public function process(){
 		$this->forceParameters();
-	
-		if(!$this->mock){
-			// execute API calls
-			$ch = curl_init( (!$this->debug ? self::URL_LIVE : self::URL_TEST ) );
-			curl_setopt($ch, CURLOPT_HEADER, 0);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $this->buildParamString());
-			$response = urldecode(curl_exec($ch));
 
-			if (curl_errno($ch)) {
-				$response[3] = curl_error($ch);
-				return false;
-			}
-			else {
-				curl_close ($ch);
-			}
+		if(!$this->mock){
+			$url = !$this->debug ? self::URL_LIVE : self::URL_TEST;
+			$url = $url . '?' . $this->buildParamString();
+
+			$response = file_get_contents($url);
 
 			$this->response = explode('|', $response);
+			
 
 		} else {
 			$this->response = $this->mock_reponse;
