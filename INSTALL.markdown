@@ -7,6 +7,10 @@ This is not recommend to serve as a library for beginners. Instead, it's a fully
 
 This framework can be used in piecemeal, and easily implemented into app. Below is the key components of the framework.
 
+## Requirements
+
+This framework requires at least PHP 5.3.2 due to namespaces, and cURL must be enabled through PHP.
+
 ## Database
 
 The database is utilizing MySQL, and is used to store the required setting names/values for each gateway. It can easily be SQLite, MSSQL, MongoDb, or really anything at all.
