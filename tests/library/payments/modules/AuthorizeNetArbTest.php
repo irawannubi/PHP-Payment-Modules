@@ -27,8 +27,8 @@ class AuthorizeNetArbTest extends \PHPUnit_Framework_TestCase
 				'creditCardNumber'		=> '4007000000027',
 				'x_amount'			=> mt_rand(),
 				'description'		=> 'Sample',
-				'creditCardExpDate'		=> '12/2012',
-				'creditCardCode'		=> '214',
+				'creditCardExpDate'		=> mt_rand(0, 12) . '/2012',
+				'creditCardCode'		=> mt_rand(0, 999),
 				'referenceId'   => mt_rand(),
 		);
 		
