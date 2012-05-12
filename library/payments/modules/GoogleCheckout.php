@@ -150,7 +150,7 @@ class GoogleCheckout implements \payments\interfaces\Modules
 
 		curl_close($ch);
 		
-		$orders = simplexml_load_string($return);
+		$orders = new \SimpleXMLElement($return);
 		
 		$status = $orders->{'fulfillment-order-state'};
 		
