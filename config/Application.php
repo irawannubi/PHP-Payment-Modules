@@ -56,6 +56,11 @@ class Application
 	
 	protected function _autoload()
 	{
+		// Ensure library/ is on include_path for Zend.
+		set_include_path(implode(PATH_SEPARATOR, array(
+		realpath(__DIR__ . '/../library'),
+		get_include_path(),
+		)));
 
 		// Zend won't work with Symfony...for whatever reason.
 		
