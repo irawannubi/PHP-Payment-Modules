@@ -114,7 +114,7 @@ class GoogleCheckout implements \payments\interfaces\Modules
 	
 		$url = "https://{$this->_settings['merchantId']}:{$this->_settings['merchantKey']}@" . $this->_gatewayUrl . "/api/checkout/v2/reports/Merchant/" . urlencode(trim($this->_settings['merchantId']));
 		
-		$config = array(
+		/*$config = array(
 			'adapter'		=> 'Zend_Http_Client_Adapter_Curl',
 			'curloptions'	=> array(
 				CURLOPT_FOLLOWLOCATION	=> true,
@@ -130,10 +130,27 @@ class GoogleCheckout implements \payments\interfaces\Modules
 		$client->setHeaders('Content-Type', 'application/xml; charset=UTF-8');
 		$client->setHeaders('Accept', 'application/xml; charset=UTF-8');
 		
-		$return = $client->setRawData($xml, 'text/xml')->request('POST')->getBody();
+		$return = $client->setRawData($xml, 'text/xml')->request('POST')->getBody(); */
 		
+		$ch = curl_init();
 		
-		$orders = new \SimpleXMLElement($return);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_SSLVERSION, 3);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_CAINFO, APP_DIR . '/certs/debug/sandbox.google.com');
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml; charset=UTF-8'));
+		
+		$return = curl_exec($ch);
+
+		curl_close($ch);
+		
+		$orders = simplexml_load_string($return);
 		
 		$status = $orders->{'fulfillment-order-state'};
 		

@@ -141,11 +141,10 @@ class Order {
 			}
 
 				$xml = $checkout->asXML();
-				#die($xml);
 
 				$url =
  "https://{$this->config['merchant_id']}:{$this->config['merchant_key']}@" . $this->config['checkout_server'] . "/api/checkout/v2/merchantCheckout/Merchant/" . urlencode(trim($this->config['merchant_id']));
-		
+		/*
 		$config = array(
 			'adapter'		=> 'Zend_Http_Client_Adapter_Curl',
 			'curloptions'	=> array(
@@ -162,8 +161,23 @@ class Order {
 		$client->setHeaders('Content-Type', 'application/xml; charset=UTF-8');
 		$client->setHeaders('Accept', 'application/xml; charset=UTF-8');
 		
-		$return = $client->setRawData($xml, 'text/xml')->request('POST')->getBody();
-		die($return);
+		$return = $client->setRawData($xml, 'text/xml')->request('POST')->getBody(); */
+				
+				$ch = curl_init();
+				
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+				curl_setopt($ch, CURLOPT_POST, true);
+				curl_setopt($ch, CURLOPT_SSLVERSION, 3);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+				curl_setopt($ch, CURLOPT_CAINFO, APP_DIR . '/certs/debug/sandbox.google.com');
+				curl_setopt($ch, CURLOPT_HEADER, array('Accept: application/xml; charset=UTF-8'));
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml; charset=UTF-8'));
+				
+				$return = curl_exec($ch);
+				curl_close($ch);
 		
 		$return = new \SimpleXMLElement($return);
 		if (!isset($return->{'redirect-url'})) {
