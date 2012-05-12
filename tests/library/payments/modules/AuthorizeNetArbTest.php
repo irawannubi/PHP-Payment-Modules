@@ -25,7 +25,7 @@ class AuthorizeNetArbTest extends \PHPUnit_Framework_TestCase
 				'email'			=> 'fake@fake.com',
 				'phone'			=> '5555555555',
 				'creditCardNumber'		=> '4007000000027',
-				'x_amount'			=> '1.99',
+				'x_amount'			=> mt_rand(),
 				'description'		=> 'Sample',
 				'creditCardExpDate'		=> '12/2012',
 				'creditCardCode'		=> '214',
@@ -33,11 +33,11 @@ class AuthorizeNetArbTest extends \PHPUnit_Framework_TestCase
 		);
 		
 		$referenceArray = array(
-				'x_subsc_name'	=> 'Test Sub',
+				'x_subsc_name'	=> 'Test Sub ' . mt_rand(),
 				'x_length'		=> mt_rand(0, 12),
 				'x_unit'			=> 'months',
 			   	'x_start_date'	=> time(),
-			   	'x_total_occurrences' => 5
+			   	'x_total_occurrences' => mt_rand(0, 12)
 		);
 		$response = $module->processPayment('1.99', $referenceArray, $billingDetails);
 		
