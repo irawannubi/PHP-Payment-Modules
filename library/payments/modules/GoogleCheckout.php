@@ -119,12 +119,13 @@ class GoogleCheckout implements \payments\interfaces\Modules
 			'curloptions'	=> array(
 				CURLOPT_FOLLOWLOCATION	=> true,
 				CURLOPT_POST			=> true,
-				CURLOPT_SSL_VERIFYPEER => (APPLICATION_ENV == 'testing') ? false : true,
-				//CURLOPT_SSL_VERIFYHOST => (APPLICATION_ENV == 'testing') ? false : true,
 				CURLOPT_SSLVERSION 		=> 3, //cURL for Travis CI.
+					CURLOPT_SSL_VERIFYPEER => true,
+					CURLOPT_SSL_VERIFYHOST => 2,
+					CURLOPT_CAINFO => APP_DIR . '/certs/debug/sandbox.google.com'
 			),
 		);
-		
+
 		$client = new \Zend_Http_Client($url, $config);
 		$client->setHeaders('Content-Type', 'application/xml; charset=UTF-8');
 		$client->setHeaders('Accept', 'application/xml; charset=UTF-8');

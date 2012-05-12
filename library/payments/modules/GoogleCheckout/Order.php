@@ -145,15 +145,16 @@ class Order {
 
 				$url =
  "https://{$this->config['merchant_id']}:{$this->config['merchant_key']}@" . $this->config['checkout_server'] . "/api/checkout/v2/merchantCheckout/Merchant/" . urlencode(trim($this->config['merchant_id']));
-
+		
 		$config = array(
 			'adapter'		=> 'Zend_Http_Client_Adapter_Curl',
 			'curloptions'	=> array(
 				CURLOPT_FOLLOWLOCATION	=> true,
 				CURLOPT_POST			=> true,
-				CURLOPT_SSL_VERIFYPEER	=> (APPLICATION_ENV == 'testing') ? false : true,
-				//CURLOPT_SSL_VERIFYHOST 	=> (APPLICATION_ENV == 'testing') ? false : true,
 				CURLOPT_SSLVERSION 		=> 3, //cURL for Travis CI.
+					CURLOPT_SSL_VERIFYPEER => true,
+					CURLOPT_SSL_VERIFYHOST => 2,
+					CURLOPT_CAINFO => APP_DIR . '/certs/debug/sandbox.google.com'
 			),
 		);
 		

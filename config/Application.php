@@ -61,7 +61,12 @@ class Application
 		realpath(__DIR__ . '/../library'),
 		get_include_path(),
 		)));
-
+		
+		// set dir.
+		if(!defined('APP_DIR')) {
+			define('APP_DIR', __DIR__ . '/..');
+		}
+		
 		// Zend won't work with Symfony...for whatever reason.
 		
 		require_once __DIR__.'/../library/Zend/Loader/Autoloader.php';
