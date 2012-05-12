@@ -140,7 +140,7 @@ class GoogleCheckout implements \payments\interfaces\Modules
 		curl_setopt($ch, CURLOPT_SSLVERSION, 3);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-		curl_setopt($ch, CURLOPT_CAINFO, APP_DIR . '/certs/debug/sandbox.google.com');
+		curl_setopt($ch, CURLOPT_CAINFO, APP_DIR . '/certs/dev/sandbox.google.com');
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);

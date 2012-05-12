@@ -15,12 +15,12 @@ class AuthorizeNetArbTest extends \PHPUnit_Framework_TestCase
 		$module->debug = true;
 		
 		$billingDetails = array(
-				'firstName'		=> 'John',
-				'lastName'		=> 'Doe',
-				'address'			=> '121 Main St',
+				'firstName'		=> 'John ' . mt_rand(0, 100),
+				'lastName'		=> 'Doe ' . mt_rand(0, 100),
+				'address'			=>  mt_rand(0, 1500) . ' Main St',
 				'city'			=> 'New York',
 				'state'			=> 'New York',
-				'zip'				=> '00000',
+				'zip'				=> '12345',
 				'country'			=> 'US',
 				'email'			=> 'fake@fake.com',
 				'phone'			=> '5555555555',
@@ -33,11 +33,11 @@ class AuthorizeNetArbTest extends \PHPUnit_Framework_TestCase
 		);
 		
 		$referenceArray = array(
-				'x_subsc_name'	=> 'Test Sub ' . mt_rand(),
+				'x_subsc_name'	=> 'Test Sub ' . microtime(true),
 				'x_length'		=> mt_rand(0, 12),
 				'x_unit'			=> 'months',
 			   	'x_start_date'	=> time(),
-			   	'x_total_occurrences' => mt_rand(0, 12)
+			   	'x_total_occurrences' => mt_rand(0, 12),
 		);
 		$response = $module->processPayment('1.99', $referenceArray, $billingDetails);
 		

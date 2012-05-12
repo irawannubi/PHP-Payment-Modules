@@ -15,9 +15,9 @@ class PayPalProRecurringTest extends \PHPUnit_Framework_TestCase
 		$module->debug = true;
 		
 		$billingDetails = array(
-			'firstName'		=> 'John',
-			'lastName'		=> 'Doe',
-			'address'			=> '121 Main St',
+			'firstName'		=> 'John ' . mt_rand(0, 100),
+			'lastName'		=> 'Doe ' . mt_rand(0, 100),
+			'address'			=>  mt_rand(0, 1500) . ' Main St',
 			'city'			=> 'New York',
 			'state'			=> 'New York',
 			'zip'				=> '00000',
@@ -35,7 +35,7 @@ class PayPalProRecurringTest extends \PHPUnit_Framework_TestCase
 		
 		$referenceArray = array('invoiceId' => 1, 
         	'x_subsc_name' => 'Test Sub',
-            'x_length' => '12',
+            'x_length' => mt_rand(0, 12),
             'x_unit' => 'Month',
             'x_start_date' => date('Y-m-d', time()) . 'T00:00:00Z',
 			'itemDescription' => 'Unit test - ' . time(),
