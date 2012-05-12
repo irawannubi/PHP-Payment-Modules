@@ -6,12 +6,34 @@
  * @author         Tyler Cole <tyler.cole@freelancerpanel.com> 
  */
 
-namespace tcole\payments;
+namespace payments\modules;
 
-class PayPalPro implements \tcole\payments\interfaces\Modules
+/**
+ * This module requires the following parameters set through payments\Modules.
+ * $referenceArray optional, pass whatever you need, such as an invoiceId, userId etc.
+ * Below is the required $billingDetails with sample values.
+ * $billingDetails = array(
+ 'firstName'		=> 'John',
+ 'lastName'		=> 'Doe',
+ 'address'		=> '121 Main St',
+ 'city'			=> 'New York',
+ 'state'			=> 'New York',
+ 'zip'			=> '12345',
+ 'country'		=> 'US',
+ 'email'			=> 'fake@fake.com',
+ 'phone'			=> '5555555555',
+ 'creditCardNumber'		=> '4007000000027',
+ 'x_amount'		=> '1.99',
+ 'description'	=> 'Sample',
+ 'creditCardExpDate'	=> '12/2012',
+ 'creditCardCode'	=> '214',
+ 'referenceId'   => '1111',
+ */
+
+class PayPalPro implements \payments\interfaces\Modules
 {
 	
-	public $debug = false;
+	public $debug = true;
 	
 	private $_gatewayUrl = '';
 	
@@ -52,11 +74,10 @@ class PayPalPro implements \tcole\payments\interfaces\Modules
 			'COUNTRYCODE' => $billingDetails['country'],
 			'CURRENCYCODE' => $billingDetails['currency'],
 			'AUTH_TIMESTAMP' => time(),
-			'PWD' => \tcole\General::decrypt($settings['apiPassword']),
-			'USER' => \tcole\General::decrypt($settings['apiUsername']),
-			'SIGNATURE' => \tcole\General::decrypt($settings['apiSignature']),
+			'PWD' => \payments\General::decrypt($settings['apiPassword']),
+			'USER' => \payments\General::decrypt($settings['apiUsername']),
+			'SIGNATURE' => $settings['apiSignature'],
 		);
-		
 		$this->fields = $defaults;
 		$this->process();
 	}
@@ -64,17 +85,18 @@ class PayPalPro implements \tcole\payments\interfaces\Modules
     public function process() {
     	$fields = $this->separateFields($this->fields);
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, (!$this->debug ? self::URL_LIVE : self::URL_TEST));
-		curl_setopt($ch, CURLOPT_VERBOSE, 1);
+		curl_setopt($ch, CURLOPT_URL, (!$this->debug ? self::LIVE_URL : self::URL_TEST));
 		
-		//turning off the server and peer verification(TrustManager Concept).
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		if(APPLICATION_ENV == 'testing') {
+			//turning off the server and peer verification(TrustManager Concept).
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		}
 	
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		
-		$headers = 'X-PP-AUTHORIZATION: ';
+		$headers = array('X-PP-AUTHORIZATION: ');
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     	curl_setopt($ch, CURLOPT_HEADER, false);
 		

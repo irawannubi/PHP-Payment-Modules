@@ -13,10 +13,10 @@
  * @link        http://www.phpfour.com
  */
 
-namespace tcole\payments;
+namespace payments\modules;
 
 
-class TwoCo implements \tcole\payments\interfaces\Modules
+class TwoCo implements \payments\interfaces\Modules
 {
 	public $fields;
 	
@@ -89,8 +89,6 @@ class TwoCo implements \tcole\payments\interfaces\Modules
 	
 	public static function returnSettings() {
             return array(
-                'apiUsername',
-                'apiPassword',
                 'vendorId',
                 'secretWord'
             );

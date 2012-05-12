@@ -6,10 +6,36 @@
  * @author         Tyler Cole <tyler.cole@freelancerpanel.com> 
  */
 
-namespace tcole\payments;
+namespace payments\modules;
+
+/**
+ * This module requires the following parameters set through payments\Modules.
+ * $referenceArray is required, but you can also pass whatever you need, such as an invoiceId, userId etc.
+ * Sample one is below:
+ * $referenceArray = array(
+	        	'items' => array(array(
+				'price' => '1.99', 'name' => 'Test Item', 'description' => 'A very nice description', 'recurring' => 1)),
+	        'recurring' => 1, 'period' => 'monthly', 'totalTimes' => 12
+			);
+ *
+ * Below is the required $billingDetails with sample values.
+ * $billingDetails = array(
+				'firstName'		=> 'John',
+				'lastName'		=> 'Doe',
+				'address'			=> '121 Main St',
+				'city'			=> 'New York',
+				'state'			=> 'New York',
+				'zip'				=> '00000',
+				'country'			=> 'US',
+				'email'			=> 'fake@fake.com',
+				'phone'			=> '5555555555',
+				'x_amount'			=> '1.99',
+				'description'		=> 'Sample',
+		);
+ */
 
 
-class GoogleCheckout implements \tcole\payments\interfaces\Modules
+class GoogleCheckout implements \payments\interfaces\Modules
 {
 	public $debug = true;
 	public $fields;
@@ -93,6 +119,8 @@ class GoogleCheckout implements \tcole\payments\interfaces\Modules
 			'curloptions'	=> array(
 				CURLOPT_FOLLOWLOCATION	=> true,
 				CURLOPT_POST			=> true,
+				CURLOPT_SSL_VERIFYPEER => (APPLICATION_ENV == 'testing') ? false : true,
+				CURLOPT_SSL_VERIFYHOST => (APPLICATION_ENV == 'testing') ? false : true,
 			),
 		);
 		
@@ -107,7 +135,8 @@ class GoogleCheckout implements \tcole\payments\interfaces\Modules
 		
 		$status = $orders->{'fulfillment-order-state'};
 		
-		if($status != 'CHARGED') {
+		
+		if($status != 'CHARGED' && $status != 'NEW') {
 			return false;
 		} else {
 			$this->_serial = $serialNumber;

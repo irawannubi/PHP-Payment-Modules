@@ -17,12 +17,12 @@ class GeneralTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($expectedResult, $classResult);
 	}
 	
-	/*public function testEncryptionDecryption()
+	public function testEncryptionDecryption()
 	{
 		$encrypt = payments\General::encrypt($this->toEncrypt);
 		$decrypt = payments\General::decrypt($encrypt);
 		
 		$this->assertEquals($decrypt, $this->toEncrypt);
-	}*/
+	}
 
 }

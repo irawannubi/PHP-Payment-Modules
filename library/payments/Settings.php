@@ -37,6 +37,14 @@ class Settings extends Database
      */
     public static function getSettingValue($settingName)
     {
+    	// check for unit testing values that uses a Mock Db.
+    	if(APPLICATION_ENV == 'testing') {
+    		// require Mock.
+    		require_once(BASE_PATH . '/tests/Mocks/Database.php');
+    	
+    		return \payments\tests\Mocks\DatabaseMocks::getSetting($settingName);
+    	}
+    	
     	$db = parent::factory();
 
     	$sql = 'SELECT value
@@ -48,6 +56,11 @@ class Settings extends Database
     	
     	$value = $statement->fetch();
     	return $value['value'];
+    }
+    
+    protected static function settingValuesMock($settingName) 
+    {
+    	
     }
 }
 

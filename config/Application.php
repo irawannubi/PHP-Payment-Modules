@@ -19,13 +19,13 @@ class Application
 	 * Database host.
 	 * @var static string
 	 */
-	protected static $_dbHost = 'localhost';
+	protected static $_dbHost = '';
 	
 	/**
 	 * Database Username.
 	 * @var static string 
 	 */
-	protected static $_dbUsername = 'root';
+	protected static $_dbUsername = '';
 	
 	/**
 	 * Database Password.
@@ -37,7 +37,7 @@ class Application
 	 * Database Name (with prefix).
 	 * @var static string 
 	 */
-	protected static $_dbName = 'payments';
+	protected static $_dbName = '';
 	
 	/**
 	 * Sample Encryption Key.
@@ -56,6 +56,13 @@ class Application
 	
 	protected function _autoload()
 	{
+
+		// Zend won't work with Symfony...for whatever reason.
+		
+		require_once __DIR__.'/../library/Zend/Loader/Autoloader.php';
+		
+		$autoloader = \Zend_Loader_Autoloader::getInstance();
+		
 		require_once __DIR__.'/../library/Symfony/ClassLoader/UniversalClassLoader.php';
 
 		$loader = new cl\UniversalClassLoader();
@@ -63,6 +70,7 @@ class Application
 		$loader->registerNamespaces(array(
 		    'payments' => __DIR__.'/../library',
 		));
+		
 
 		$loader->register();
 	}

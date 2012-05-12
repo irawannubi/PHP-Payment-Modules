@@ -6,9 +6,29 @@
  * @author         Tyler Cole <tyler.cole@freelancerpanel.com> 
  */
 
-namespace tcole\payments;
+namespace payments\modules;
 
-class PayPal implements \tcole\payments\interfaces\Modules
+/**
+ * This module requires the following parameters set through payments\Modules.
+ * $referenceArray is not required, you can also pass whatever you need, such as an invoiceId, userId etc.
+ $billingDetails = array(
+				'firstName'		=> 'John',
+				'lastName'		=> 'Doe',
+				'address'			=> '121 Main St',
+				'city'			=> 'New York',
+				'state'			=> 'New York',
+				'zip'				=> '00000',
+				'country'			=> 'US',
+				'email'			=> 'fake@fake.com',
+				'phone'			=> '5555555555',
+				'x_amount'			=> '1.99',
+				'description'		=> 'Sample',
+		);
+* Additionally, the module will only generate a URL. Please use header() or JS to redirect.
+* Also, you will need to create the IPN callback function to mark as paid, or whatever you need for your app.		
+ */
+
+class PayPal implements \payments\interfaces\Modules
 {
 	public $debug = false;
 	
@@ -104,7 +124,7 @@ class PayPal implements \tcole\payments\interfaces\Modules
 		$fp = fsockopen($urlParsed['host'], '80', $errNum, $errStr, 30);
 		
 		if(!$fp) {
-			\tcole\Error::fatalError('100', 'Could not open socket.');
+			\payments\Error::fatalError('100', 'Could not open socket.');
 		} else {
 			// Post the data back to paypal
 

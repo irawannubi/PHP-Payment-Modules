@@ -1,6 +1,5 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+
 use payments\Application;
 
 /** Application */
@@ -8,6 +7,7 @@ require_once 'config/Application.php';
 
 // Create application,
 $application = new Application();
+
 
 /**
  * Sample on how to call Authorize.net.

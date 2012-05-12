@@ -8,6 +8,13 @@
 
 namespace payments;
 
+/**
+ * Entry-point into each gateway. Will call \payment\Settings to get the value of each required setting from the gateway.
+ * Assumes all gateways are namespaced as payments\modules, and are located relatively from this file in modules\Class.php.
+ * Class can be called magically to all module methods, even if not defined here.
+ * setModuleName must be called after instantiation and before processPayment(). 
+ */
+
 class Modules extends General
 {
     /**
@@ -62,6 +69,7 @@ class Modules extends General
         $settingValues = self::getModuleSettingValues();
    
         $moduleName = __NAMESPACE__ . '\\modules\\' . self::$_moduleName;
+
         $module = new $moduleName($amount, $referenceArray, $billingDetails, $settingValues);
         $module->process();
         

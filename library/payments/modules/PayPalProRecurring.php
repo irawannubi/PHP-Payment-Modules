@@ -6,9 +6,40 @@
  * @author         Tyler Cole <tyler.cole@freelancerpanel.com> 
  */
 
-namespace tcole\payments;
+namespace payments\modules;
 
-class PayPalProRecurring extends PayPalPro implements \tcole\payments\interfaces\Modules
+/**
+ * This module requires the following parameters set through payments\Modules.
+ * $referenceArray is required, but you can also pass whatever you need, such as an invoiceId, userId etc.
+ * Below is the required $billingDetails with sample values.
+ * 
+ $referenceArray = array('invoiceId' => 1, 
+        	'x_subsc_name' => 'Test Sub',
+            'x_length' => '12',
+            'x_unit' => 'Month',
+            'x_start_date' => date('Y-m-d', time()) . 'T00:00:00Z',
+			'itemDescription' => 'Unit test - ' . time(),
+            'x_total_occurrences' => 5);
+ * Sample billing details: Notice it requires CVV and not cardCode.
+ * $billingDetails = array(
+ 'firstName'		=> 'John',
+ 'lastName'		=> 'Doe',
+ 'address'		=> '121 Main St',
+ 'city'			=> 'New York',
+ 'state'			=> 'New York',
+ 'zip'			=> '12345',
+ 'country'		=> 'US',
+ 'email'			=> 'fake@fake.com',
+ 'phone'			=> '5555555555',
+ 'creditCardNumber'		=> '4007000000027',
+ 'x_amount'		=> '1.99',
+ 'description'	=> 'Sample',
+ 'creditCardExpDate'	=> '12/2012',
+ 'creditCardCVV'	=> '214',
+ 'referenceId'   => '1111',
+ */
+
+class PayPalProRecurring extends PayPalPro implements \payments\interfaces\Modules
 {
 	
 	public $debug = true;
@@ -48,14 +79,14 @@ class PayPalProRecurring extends PayPalPro implements \tcole\payments\interfaces
 			'COUNTRYCODE' => $billingDetails['country'],
 			'CURRENCYCODE' => $billingDetails['currency'],
 			'PROFILESTARTDATE' => $referenceArray['x_start_date'],
-			'DESC' => $billingDetails['itemDescription'],
+			'DESC' => $referenceArray['itemDescription'],
 			'BILLINGPERIOD' => $referenceArray['x_unit'],
 			'BILLINGFREQUENCY' => $referenceArray['x_length'],
 			'TOTALBILLINGCYCLES' => $referenceArray['x_total_occurrences'],
 			'AUTH_TIMESTAMP' => time(),
-			'PWD' => \tcole\General::decrypt($settings['apiPassword']),
-			'USER' => \tcole\General::decrypt($settings['apiUsername']),
-			'SIGNATURE' => \tcole\General::decrypt($settings['apiSignature']),
+			'PWD' => \payments\General::decrypt($settings['apiPassword']),
+			'USER' => \payments\General::decrypt($settings['apiUsername']),
+			'SIGNATURE' => $settings['apiSignature'],
 		);
 
 		$this->fields = $defaults;
@@ -66,11 +97,12 @@ class PayPalProRecurring extends PayPalPro implements \tcole\payments\interfaces
     	$fields = $this->separateFields($this->fields);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, (!$this->debug ? self::URL_LIVE : self::URL_TEST));
-		curl_setopt($ch, CURLOPT_VERBOSE, 1);
 		
-		//turning off the server and peer verification(TrustManager Concept).
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+    	if(APPLICATION_ENV == 'testing') {
+			//turning off the server and peer verification(TrustManager Concept).
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		}
 	
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 		curl_setopt($ch, CURLOPT_POST, 1);
