@@ -151,6 +151,7 @@ class Order {
 			'curloptions'	=> array(
 				CURLOPT_FOLLOWLOCATION	=> true,
 				CURLOPT_POST			=> true,
+				CURLOPT_SSLVERSION 		=> 3, //cURL for Travis CI.
 				CURLOPT_SSL_VERIFYPEER	=> (APPLICATION_ENV == 'testing') ? false : true,
 				CURLOPT_SSL_VERIFYHOST 	=> (APPLICATION_ENV == 'testing') ? false : true
 			),
