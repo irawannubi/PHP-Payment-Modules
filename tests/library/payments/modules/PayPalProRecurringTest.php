@@ -28,8 +28,8 @@ class PayPalProRecurringTest extends \PHPUnit_Framework_TestCase
 			'creditCardType' => 'Visa',
 			'x_amount'			=> '1.99',
 			'currency' => 'USD', 
-			'creditCardExpDate'		=> '122012',
-			'creditCardCVV'		=> '214',
+			'creditCardExpDate'		=> mt_rand(0, 12) . '/2012',
+			'creditCardCVV'		=> mt_rand(1, 999),
             'referenceId'   => '1111',
 		);
 		
