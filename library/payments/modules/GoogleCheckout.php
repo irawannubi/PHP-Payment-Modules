@@ -147,6 +147,10 @@ class GoogleCheckout implements \payments\interfaces\Modules
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml; charset=UTF-8'));
 		
 		$return = curl_exec($ch);
+		
+		if(curl_exec($ch) === false) {
+			echo 'Curl error: ' . curl_error($ch);
+		}
 
 		curl_close($ch);
 		
