@@ -28,7 +28,7 @@ class AuthorizeNetArbTest extends \PHPUnit_Framework_TestCase
 				'x_amount'			=> mt_rand(),
 				'description'		=> 'Sample',
 				'creditCardExpDate'		=> mt_rand(0, 12) . '/2012',
-				'creditCardCode'		=> mt_rand(0, 999),
+				'creditCardCode'		=> mt_rand(1, 999),
 				'referenceId'   => mt_rand(),
 		);
 		
@@ -41,10 +41,12 @@ class AuthorizeNetArbTest extends \PHPUnit_Framework_TestCase
 		);
 		$response = $module->processPayment('1.99', $referenceArray, $billingDetails);
 		
-		if(is_bool($response)) {
+		if(is_bool($response) && $response == true) {
 			$this->assertEquals(true, $response);
-		} else {
+		} elseif(is_bool($response) && $response == false) {
 			$this->assertContains('duplicate', $module->getResponse());
+		} else {
+			$this->assertContains('Successful', $response);
 		}
 		
 	}
