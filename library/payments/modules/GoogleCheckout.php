@@ -154,7 +154,6 @@ class GoogleCheckout implements \payments\interfaces\Modules
 
 		curl_close($ch);
 		
-		var_dump($return);
 		
 		$orders = new \SimpleXMLElement($return);
 		

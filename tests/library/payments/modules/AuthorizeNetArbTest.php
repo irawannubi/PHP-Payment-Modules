@@ -44,7 +44,7 @@ class AuthorizeNetArbTest extends \PHPUnit_Framework_TestCase
 		if(is_bool($response)) {
 			$this->assertEquals(true, $response);
 		} else {
-			$this->assertContains('Successful', $response);
+			$this->assertContains('duplicate', $module->getResponse());
 		}
 		
 	}
