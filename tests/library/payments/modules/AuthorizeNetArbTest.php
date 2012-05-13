@@ -41,6 +41,7 @@ class AuthorizeNetArbTest extends \PHPUnit_Framework_TestCase
 		);
 		$response = $module->processPayment('1.99', $referenceArray, $billingDetails);
 		
+		
 		if(is_bool($response) && $response == true) {
 			$this->assertEquals(true, $response);
 		} elseif(is_bool($response) && $response == false) {

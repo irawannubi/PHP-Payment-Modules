@@ -15,9 +15,9 @@ class PayPalProRecurringTest extends \PHPUnit_Framework_TestCase
 		$module->debug = true;
 		
 		$billingDetails = array(
-			'firstName'		=> 'John ' . mt_rand(0, 100),
-			'lastName'		=> 'Doe ' . mt_rand(0, 100),
-			'address'			=>  mt_rand(0, 1500) . ' Main St',
+			'firstName'		=> 'John',
+			'lastName'		=> 'Doe',
+			'address'			=> '121 Main St',
 			'city'			=> 'New York',
 			'state'			=> 'New York',
 			'zip'				=> '00000',
@@ -28,8 +28,8 @@ class PayPalProRecurringTest extends \PHPUnit_Framework_TestCase
 			'creditCardType' => 'Visa',
 			'x_amount'			=> '1.99',
 			'currency' => 'USD', 
-			'creditCardExpDate'		=> mt_rand(0, 12) . '/2012',
-			'creditCardCVV'		=> mt_rand(1, 999),
+			'creditCardExpDate'		=> '122012',
+			'creditCardCVV'		=> '214',
             'referenceId'   => '1111',
 		);
 		
@@ -42,7 +42,6 @@ class PayPalProRecurringTest extends \PHPUnit_Framework_TestCase
             'x_total_occurrences' => 5);
 		
 		$response = $module->processPayment('1.99', $referenceArray, $billingDetails);
-		
 		
 		$this->assertEquals(true, $response);
 		
